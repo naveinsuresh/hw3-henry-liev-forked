@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ligotools"
+authors = [
+  { name="Ligo Scientific Collaboration (LSC) and Henry Liev", email="lievhenry@berkeley.edu" },
+]
+description = "This module provides tools for reading LIGO data files.  Data along with supporting documentation can be downloaded from the losc web site: https://losc.ligo.org"
+readme = "README.md"
+
+requires-python = "==3.8"
+dependencies = [
+    "numpy==1.23",
+    "h5py==3.7",
+    "matplotlib==3.5",
+    "ipython==8.2",
+    "ipykernal==5.5",
+    "decorator==5.1",
+    "scipy==1.8"
+]
+
+license = "BSD-3-Clause"
+license-files = ["LICEN[CS]E*"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+
+keywords = ["tools", "ligo", "gravitational waves"]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/UCB-stat-159-f25/hw3-henry-liev"
+Issues = "https://github.com/UCB-stat-159-f25/hw3-henry-liev/issues"
+
+[tool.setuptools]
+packages = ["ligotools"]
+
+[tool.setuptools.dynamic]
+version = {attr = "ligotools.__version__"}
