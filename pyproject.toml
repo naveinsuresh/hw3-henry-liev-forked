@@ -13,12 +13,7 @@ readme = "README.md"
 requires-python = "==3.8"
 dependencies = [
     "numpy==1.23",
-    "h5py==3.7",
-    "matplotlib==3.5",
-    "ipython==8.2",
-    "ipykernal==5.5",
-    "decorator==5.1",
-    "scipy==1.8"
+    "h5py==3.7"
 ]
 
 license = "BSD-3-Clause"
