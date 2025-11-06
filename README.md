@@ -4,4 +4,7 @@
 This is an adaptation of the software provided by the LIGO Scientific Collaboration. The purpose of this repository is to ensure reproducibility on systems and check for any potential failures. Some of the code was also moved into a utilities folder. 
 
 
+Link to myst website: https://UCB-stat-159-f25.github.io/hw3-henry-liev
+
+
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/UCB-stat-159-f25/hw3-henry-liev/HEAD)
