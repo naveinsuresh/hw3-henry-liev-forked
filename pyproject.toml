@@ -10,7 +10,7 @@ authors = [
 description = "This module provides tools for reading LIGO data files.  Data along with supporting documentation can be downloaded from the losc web site: https://losc.ligo.org"
 readme = "README.md"
 
-requires-python = "==3.8"
+requires-python = ">=3.9"
 dependencies = [
     "numpy==2.0",
     "h5py==3.7"

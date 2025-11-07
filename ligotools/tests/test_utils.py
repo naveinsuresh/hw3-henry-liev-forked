@@ -1,13 +1,10 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 from scipy.interpolate import interp1d
-from scipy.signal import butter, filtfilt, iirdesign, zpk2tf, freqz
 import readligo as rl
 import utils
 import json
 
-# Regression Test on whiten() function in utils.py
 def test_whiten():
     strain_l1, time_l1, chan_dict_l1 = rl.loaddata('data/L-L1_LOSC_4_V2-1126259446-32.hdf5', 'L1')
     eventname = 'GW150914' 
@@ -25,7 +22,7 @@ def test_whiten():
 
 def test_write_wavfile():
     data_test = np.arange(1, 2049)
-    write_wavfile("unit_test.wav", 4096, data_test)
+    utils.write_wavfile("unit_test.wav", 4096, data_test)
     
     first_10_key = np.int16(data_test/np.max(np.abs(data_test)) * 32767 * 0.9)[:10]
     
@@ -39,7 +36,6 @@ def test_write_wavfile():
     
     os.remove(cdir + "/audio/unit_test.wav")
 
-# Regression Test on reqshift() function in utils.py
 def test_reqshift():
     dt = 0.001
     strain_test = np.arange(1, 1000)
