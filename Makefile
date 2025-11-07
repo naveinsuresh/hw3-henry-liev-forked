@@ -1,5 +1,3 @@
-# This is a Makefile
-
 .PHONY: env
 env:
     conda env update -n ligo -f environment.yml
