@@ -1,8 +1,7 @@
 import numpy as np
 import matplotlib.mlab as mlab
 from scipy.interpolate import interp1d
-import readligo as rl
-import utils
+from ligotools import utils
 import json
 
 def test_whiten():
