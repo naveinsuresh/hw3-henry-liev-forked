@@ -1,6 +1,6 @@
 .PHONY: env
 env:
-    conda env update -n ligo -f environment.yml
+	conda env update -n ligo -f environment.yml
 
 .PHONY: html
 html:
