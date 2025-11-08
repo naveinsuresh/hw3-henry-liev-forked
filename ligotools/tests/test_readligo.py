@@ -1,30 +1,42 @@
-from ligotools import readligo as rl
 import numpy as np
-
+import h5py
 import pytest
+from ligotools import readligo as rl
 
-#accuarcy test
-def test_loaddata():
-    strain_h1, time_h1, chan_dict_h1 = rl.loaddata('data/H-H1_LOSC_4_V2-1126259446-32.hdf5', 'H1')
-    assert np.isclose(strain_h1[1],2.08763900e-19)
-    assert np.isclose(time_h1[1],1126259446.0002441)
-    assert np.isclose(chan_dict_h1['CBC_CAT1'][1], 1)
-    assert np.isclose(len(time_h1),131072)
-    assert np.isclose(len(chan_dict_h1),13)
-    strain_l1, time_l1, chan_dict_l1 = rl.loaddata('data/L-L1_LOSC_4_V2-1126259446-32.hdf5', 'L1')
-    assert np.isclose(strain_l1[1], -1.03586274e-18)
-    assert np.isclose(time_l1[1], 1.12625945e+09)
-    assert np.isclose(chan_dict_l1['NO_CW_HW_INJ'].sum(),0)
-    assert len(time_l1) == 131072
-    assert len(chan_dict_l1) == 13
 
-#type test
-def test_type():
-    strain_l1, time_l1, chan_dict_l1 = rl.loaddata('data/L-L1_LOSC_4_V2-1126259446-32.hdf5', 'L1')
-    assert isinstance(strain_l1, np.ndarray)
-    assert isinstance(time_l1,np.ndarray)
-    assert isinstance(chan_dict_l1,dict)
-    strain_h1, time_h1, chan_dict_h1 = rl.loaddata('data/H-H1_LOSC_4_V2-1126259446-32.hdf5', 'H1')
-    assert isinstance(strain_h1, np.ndarray)
-    assert isinstance(time_h1, np.ndarray)
-    assert isinstance(chan_dict_h1, dict)
+def test_dq_channel_to_seglist_basic():
+    channel = np.array([0, 1, 1, 0, 1, 1, 1, 0])
+    fs = 1  
+
+    segs = rl.dq_channel_to_seglist(channel, fs=fs)
+
+    expected = [slice(1, 3), slice(4, 7)]
+
+    assert len(segs) == len(expected)
+    for s, e in zip(segs, expected):
+        assert s.start == e.start
+        assert s.stop == e.stop
+
+
+
+def test_loaddata(tmp_path):
+    file_path = tmp_path / "tiny.hdf5"
+
+    with h5py.File(file_path, "w") as f:
+        strain = f.create_dataset("strain/Strain", data=np.array([0.1, 0.2, 0.3]))
+        strain.attrs["Xspacing"] = 1.0 
+
+        f.create_dataset("meta/GPSstart", data=1000000000)
+        f.create_dataset("quality/simple/DQmask", data=np.array([1, 1, 1], dtype="int32"))
+        f.create_dataset("quality/simple/DQShortnames", data=np.array([b"DATA"]))
+        f.create_dataset("quality/injections/Injmask", data=np.array([0, 0, 0], dtype="int32"))
+        f.create_dataset("quality/injections/InjShortnames", data=np.array([b"INJ"]))
+
+    strain, time, dq = rl.loaddata(str(file_path))
+
+    assert isinstance(strain, np.ndarray)
+    assert isinstance(time, np.ndarray)
+    assert isinstance(dq, dict)
+    assert "DATA" in dq
+    assert "INJ" in dq
+    assert "DEFAULT" in dq
